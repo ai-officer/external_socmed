@@ -6,6 +6,8 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { getPdfThumbnailUrl, getDocumentThumbnailUrl, getVideoThumbnailUrl, getImageThumbnailUrl } from '@/utils/thumbnails'
 
+export const dynamic = 'force-dynamic'
+
 const fileQuerySchema = z.object({
   folderId: z.string().optional(),
   page: z.coerce.number().min(1).default(1),

@@ -5,6 +5,8 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { getPdfThumbnailUrl, getDocumentThumbnailUrl, getVideoThumbnailUrl, getImageThumbnailUrl } from '@/utils/thumbnails'
 
+export const dynamic = 'force-dynamic'
+
 const searchQuerySchema = z.object({
   q: z.string().optional(),
   type: z.enum(['all', 'image', 'video', 'document']).default('all'),
