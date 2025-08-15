@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { SearchBar } from '@/components/search/SearchBar'
@@ -14,7 +14,7 @@ import { Sliders, History, X, Bookmark } from 'lucide-react'
 import Sidebar from '@/components/layout/Sidebar'
 import Header from '@/components/layout/Header'
 
-export default function SearchPage() {
+function SearchPageContent() {
   const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const { search, loading, error, results, pagination, query, clearResults } = useSearch()
@@ -259,5 +259,13 @@ export default function SearchPage() {
         </main>
       </div>
     </div>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchPageContent />
+    </Suspense>
   )
 }

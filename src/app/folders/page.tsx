@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useFolders } from '@/hooks/useFolders'
@@ -43,7 +43,7 @@ type SortField = 'name' | 'createdAt' | 'updatedAt'
 type SortOrder = 'asc' | 'desc'
 type FilterMode = 'all' | 'empty' | 'withContent' | 'recent'
 
-export default function FoldersPage() {
+function FoldersPageContent() {
   const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -596,5 +596,13 @@ export default function FoldersPage() {
 
       {/* Folder dialogs are now handled by FolderContextMenu */}
     </div>
+  )
+}
+
+export default function FoldersPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FoldersPageContent />
+    </Suspense>
   )
 }

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,20 +8,19 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  folders        Folder[]
-  files          File[]
-  tags           Tag[]
-  searchHistory  SearchHistory[]
-  savedSearches  SavedSearch[]
-  
+  id            String          @id @default(cuid())
+  email         String          @unique
+  name          String?
+  password      String
+  role          Role            @default(USER)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  files         File[]
+  folders       Folder[]
+  savedSearches SavedSearch[]
+  searchHistory SearchHistory[]
+  tags          Tag[]
+
   @@map("users")
 }
 
@@ -35,37 +31,35 @@ model Folder {
   parentId    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+  userId      String
+  files       File[]
   parent      Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
   children    Folder[] @relation("FolderHierarchy")
-  files       File[]
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  
+
   @@index([userId])
   @@index([parentId])
   @@map("folders")
 }
 
 model File {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   filename      String
   originalName  String
   mimeType      String
   size          Int
-  cloudinaryId  String   @unique
+  cloudinaryId  String    @unique
   cloudinaryUrl String
   description   String?
   deletedAt     DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
-  folder   Folder?   @relation(fields: [folderId], references: [id])
-  folderId String?
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
-  tags     FileTag[]
-  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  folderId      String?
+  userId        String
+  tags          FileTag[]
+  folder        Folder?   @relation(fields: [folderId], references: [id])
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
   @@index([folderId])
   @@index([mimeType])
@@ -74,27 +68,26 @@ model File {
 }
 
 model Tag {
-  id        String   @id @default(cuid())
-  name      String
-  color     String   @default("#3B82F6")
+  id          String    @id @default(cuid())
+  name        String
+  color       String    @default("#3B82F6")
   description String?
-  createdAt DateTime @default(now())
-  
-  files  FileTag[]
-  user   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  
+  createdAt   DateTime  @default(now())
+  userId      String
+  files       FileTag[]
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([name, userId])
   @@index([userId])
   @@map("tags")
 }
 
 model FileTag {
-  file   File   @relation(fields: [fileId], references: [id], onDelete: Cascade)
   fileId String
-  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
   tagId  String
-  
+  file   File   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
   @@id([fileId, tagId])
   @@map("file_tags")
 }
@@ -102,13 +95,12 @@ model FileTag {
 model SearchHistory {
   id           String   @id @default(cuid())
   query        String
-  filters      String?  // JSON string of filters
+  filters      String?
   resultsCount Int      @default(0)
   createdAt    DateTime @default(now())
-  
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
   @@index([createdAt])
   @@map("search_history")
@@ -119,14 +111,13 @@ model SavedSearch {
   name        String
   description String?
   query       String
-  filters     String?  // JSON string of filters
+  filters     String?
   isPublic    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
   @@map("saved_searches")
 }
