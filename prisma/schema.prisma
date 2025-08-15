@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  folders        Folder[]
+  files          File[]
+  tags           Tag[]
+  searchHistory  SearchHistory[]
+  savedSearches  SavedSearch[]
+  
+  @@map("users")
+}
+
+model Folder {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  parentId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  parent      Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children    Folder[] @relation("FolderHierarchy")
+  files       File[]
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  
+  @@index([userId])
+  @@index([parentId])
+  @@map("folders")
+}
+
+model File {
+  id            String   @id @default(cuid())
+  filename      String
+  originalName  String
+  mimeType      String
+  size          Int
+  cloudinaryId  String   @unique
+  cloudinaryUrl String
+  description   String?
+  deletedAt     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  folder   Folder?   @relation(fields: [folderId], references: [id])
+  folderId String?
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  tags     FileTag[]
+  
+  @@index([userId])
+  @@index([folderId])
+  @@index([mimeType])
+  @@index([deletedAt])
+  @@map("files")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String
+  color     String   @default("#3B82F6")
+  description String?
+  createdAt DateTime @default(now())
+  
+  files  FileTag[]
+  user   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  
+  @@unique([name, userId])
+  @@index([userId])
+  @@map("tags")
+}
+
+model FileTag {
+  file   File   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  fileId String
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String
+  
+  @@id([fileId, tagId])
+  @@map("file_tags")
+}
+
+model SearchHistory {
+  id           String   @id @default(cuid())
+  query        String
+  filters      String?  // JSON string of filters
+  resultsCount Int      @default(0)
+  createdAt    DateTime @default(now())
+  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@map("search_history")
+}
+
+model SavedSearch {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  query       String
+  filters     String?  // JSON string of filters
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  
+  @@index([userId])
+  @@map("saved_searches")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
