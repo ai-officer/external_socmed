@@ -27,6 +27,7 @@ const navigation = [
 
 const adminNavigation = [
   { name: 'Admin Dashboard', href: '/admin', icon: Shield },
+  { name: 'User Management', href: '/admin/users', icon: Users },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
@@ -75,7 +76,7 @@ export default function Sidebar() {
               </Link>
             ))}
             
-            {session?.user?.role === 'ADMIN' && (
+            {(session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN') && (
               <>
                 <div className="mt-8">
                   <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
