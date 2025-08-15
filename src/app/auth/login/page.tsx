@@ -193,20 +193,7 @@ export default function LoginPage() {
                   </p>
                 </div>
 
-                {/* Demo Accounts */}
-                <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
-                  <p className="text-sm font-semibold text-gray-900 mb-2">Demo Accounts:</p>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Admin:</span>
-                      <span className="font-mono text-gray-800">admin@cms.com / admin123</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">User:</span>
-                      <span className="font-mono text-gray-800">user@cms.com / user123</span>
-                    </div>
-                  </div>
-                </div>
+
               </form>
             </CardContent>
           </Card>

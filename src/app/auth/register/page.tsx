@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Eye, EyeOff, Mail, Lock, User, Loader2, CheckCircle } from 'lucide-react'
+import { Eye, EyeOff, Mail, Lock, User, Loader2 } from 'lucide-react'
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -87,34 +87,24 @@ export default function RegisterPage() {
             <p className="text-xl text-gray-600 mb-8">
               Start organizing your digital assets today with powerful tools and features.
             </p>
-            <div className="grid grid-cols-1 gap-4 text-sm">
+            <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="bg-white rounded-lg p-4 shadow-sm border">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 ml-3">Free Account</h3>
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
                 </div>
-                <ul className="space-y-1 text-gray-600 text-xs">
-                  <li>• Upload up to 100 files</li>
-                  <li>• 1GB storage space</li>
-                  <li>• Basic organization tools</li>
-                </ul>
+                <h3 className="font-semibold text-gray-900">Easy Upload</h3>
+                <p className="text-gray-600 text-xs mt-1">Drag & drop files effortlessly</p>
               </div>
               <div className="bg-white rounded-lg p-4 shadow-sm border">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="font-semibold text-gray-900 ml-3">Secure & Private</h3>
+                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mb-2">
+                  <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
                 </div>
-                <ul className="space-y-1 text-gray-600 text-xs">
-                  <li>• End-to-end encryption</li>
-                  <li>• Regular backups</li>
-                  <li>• Privacy-first approach</li>
-                </ul>
+                <h3 className="font-semibold text-gray-900">Smart Organization</h3>
+                <p className="text-gray-600 text-xs mt-1">Folders, tags, and search</p>
               </div>
             </div>
           </div>
